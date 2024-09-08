@@ -1,0 +1,1 @@
+# MAI_Labs_ObjectOrientedProgramming_3sem2024
