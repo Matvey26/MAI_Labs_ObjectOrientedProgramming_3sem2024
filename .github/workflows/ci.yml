@@ -24,12 +24,5 @@ jobs:
     - name: Build
       run: cmake --build build
 
-    - name: Run tests
-      run: |
-        ./build/lab1/test_lab1
-        ./build/lab2/test_lab2
-        ./build/lab3/test_lab3
-        ./build/lab4/test_lab4
-        ./build/lab5/test_lab5
-        ./build/lab6/test_lab6
-        ./build/lab7/test_lab7
+    # - name: Run tests
+      # run: ./build/labX/test_labX

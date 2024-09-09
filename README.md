@@ -1,1 +1,3 @@
-# MAI_Labs_ObjectOrientedProgramming_3sem2024
+# МАИ ООП 3 семестр 2024 год
+
+Решение лабораторных работ по ООП.
