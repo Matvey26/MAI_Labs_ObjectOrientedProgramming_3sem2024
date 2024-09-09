@@ -20,7 +20,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 # Создание исполняемого файла
-add_executable(lab1_exe src/main.cpp)
+add_executable(${PROJECT_NAME}_exe src/main.cpp)
 
 # Связывание исполняемого файла с библиотеками (если нужно)
 # target_link_libraries(lab1_exe PRIVATE ${CMAKE_PROJECT_NAME}_lib)
@@ -28,8 +28,8 @@ add_executable(lab1_exe src/main.cpp)
 # Добавление тестов
 enable_testing()
 
-add_executable(tests tests/unit.cpp)
-target_link_libraries(tests gtest_main)
+add_executable(test_${PROJECT_NAME} tests/unit.cpp)
+target_link_libraries(test_${PROJECT_NAME} gtest_main)
 
 # Добавление тестов в тестовый набор
 add_test(NAME TestLab1 COMMAND tests)
