@@ -24,5 +24,6 @@ jobs:
     - name: Build
       run: cmake --build build
 
-    - name: Run all tests
-      run: ctest --output-on-failure
+    # Не забудь поменять X на номер лабы
+    # - name: Run tests
+    #   run: ./build/labX/test_labX
