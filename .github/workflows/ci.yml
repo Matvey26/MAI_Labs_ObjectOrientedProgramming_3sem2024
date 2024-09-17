@@ -25,4 +25,4 @@ jobs:
       run: cmake --build build
 
     - name: Run tests
-      run: ./build/labX/test_lab1
+      run: ./test.sh
