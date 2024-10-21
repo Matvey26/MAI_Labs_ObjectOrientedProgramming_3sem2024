@@ -13,7 +13,6 @@ public:
     Point(const Point& other) noexcept;
     ~Point() = default;
 
-
     // Арифметические операторы
     Point operator+(const Point& other) const;
     Point& operator+=(const Point& other);
@@ -23,6 +22,9 @@ public:
     Point& operator*=(double scalar);
     Point operator/(double scalar) const;
     Point& operator/=(double scalar);
+
+    // Оператор копирования
+    Point& operator=(const Point& other);
 
     // Операторы квадратных скобочек для доступа к координатам
     double& operator[](int index);

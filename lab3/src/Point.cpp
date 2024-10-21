@@ -25,6 +25,13 @@ Point::Point(const Point& other) noexcept
   , y_(other.y_)
 {}
 
+// Оператор копирования
+Point& Point::operator=(const Point& other) {
+    this->x_ = other.x_;
+    this->y_ = other.y_;
+    return *this;
+}
+
 // Арифметические операторы
 Point Point::operator+(const Point& other) const {
     return Point(this->x_ + other.x_, this->y_ + other.y_);

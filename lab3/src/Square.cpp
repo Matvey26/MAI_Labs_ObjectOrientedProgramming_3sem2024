@@ -2,24 +2,12 @@
 #include <iostream>
 
 // Конструкторы
-Square::Square() noexcept : points_(new Point[vertices_number_]) {}
+Square::Square() noexcept : Figure(4) {}
 
-Square::Square(Point* points) noexcept
-    : Figure(vertices_number_, points), points_(new Point[vertices_number_]) {
-    for (size_t i = 0; i < vertices_number_; ++i) {
-        points_[i] = points[i];
-    }
-}
-
-Square::Square(const Square& other) noexcept 
-    : Figure(other), points_(new Point[vertices_number_]) {
+Square::Square(const Square& other) noexcept : Figure(other) {
     for (size_t i = 0; i < vertices_number_; ++i) {
         points_[i] = other.points_[i];
     }
-}
-
-Square::~Square() noexcept {
-    delete[] points_;
 }
 
 // Переопределённый оператор присваивания

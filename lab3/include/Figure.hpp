@@ -8,7 +8,7 @@ class Figure {
 public:
     // Конструкторы и деструктор
     Figure() noexcept;
-    Figure(size_t vertices_number, Point* points) noexcept;
+    Figure(size_t vertices_number) noexcept;
     Figure(std::initializer_list<std::pair<double, double>> points) noexcept;
     Figure(const Figure& other) noexcept;
     Figure(Figure&& other) noexcept;
@@ -22,11 +22,12 @@ public:
     // Операторы
     explicit operator double() const noexcept;
     Figure& operator=(const Figure& other);
+    bool operator==(const Figure& other) const;
 
     friend std::ostream& operator<<(std::ostream& out, const Figure& f);
     friend std::istream& operator>>(std::istream& in, Figure& f);
 
-private:
+protected:
     size_t vertices_number_;
     Point* points_;
 };

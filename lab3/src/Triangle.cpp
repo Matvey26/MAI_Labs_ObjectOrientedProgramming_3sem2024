@@ -2,24 +2,12 @@
 #include <iostream>
 
 // Конструкторы
-Triangle::Triangle() noexcept : points_(new Point[vertices_number_]) {}
+Triangle::Triangle() noexcept : Figure(3) {}
 
-Triangle::Triangle(Point* points) noexcept
-    : Figure(vertices_number_, points), points_(new Point[vertices_number_]) {
-    for (size_t i = 0; i < vertices_number_; ++i) {
-        points_[i] = points[i];
-    }
-}
-
-Triangle::Triangle(const Triangle& other) noexcept 
-    : Figure(other), points_(new Point[vertices_number_]) {
+Triangle::Triangle(const Triangle& other) noexcept : Figure(other) {
     for (size_t i = 0; i < vertices_number_; ++i) {
         points_[i] = other.points_[i];
     }
-}
-
-Triangle::~Triangle() noexcept {
-    delete[] points_;
 }
 
 // Переопределённый оператор присваивания

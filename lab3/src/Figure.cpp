@@ -1,5 +1,6 @@
 #include "Figure.hpp"
 #include <initializer_list>
+#include <cmath>
 #include <utility>
 #include <iostream>
 
@@ -9,14 +10,10 @@ Figure::Figure() noexcept
     , points_(nullptr)
 {}
 
-Figure::Figure(size_t vertices_number, Point* points) noexcept
+Figure::Figure(size_t vertices_number) noexcept
     : vertices_number_(vertices_number)
     , points_(new Point[this->vertices_number_])
-{
-    for (size_t i = 0; i < vertices_number; ++i) {
-        this->points_[i] = points[i];
-    }
-}
+{}
 
 Figure::Figure(std::initializer_list<std::pair<double, double>> points) noexcept
     : vertices_number_(points.size())
@@ -96,6 +93,40 @@ Figure& Figure::operator=(const Figure& other) {
     return *this;
 }
 
+bool Figure::operator==(const Figure& other) const {
+    if (this->vertices_number_ != other.vertices_number_) {
+        return false;
+    }
+
+    Point this_center = Point(this->GetCenter());
+    Point other_center = Point(other.GetCenter());
+
+    // Ищем хотя бы одну совпадающую точку
+    size_t offset = 0.0;
+    for (; offset < this->vertices_number_; ++offset) {
+        if (fabs(((this->points_[offset] - this_center) - (other.points_[0] - other_center)).Length()) < 1e-6) {
+            break;
+        }
+    }
+
+    // Проверяем, совпадают ли все точки.
+    // Проверяем в обе стороны (против и по часовой стрелке)
+    bool flag1 = true;
+    bool flag2 = true;
+    for (size_t i = 0; i < other.vertices_number_; ++i) {
+        size_t j1 = (i + offset) % this->vertices_number_;
+        size_t j2 = (offset - i + this->vertices_number_) % this->vertices_number_;
+        if (fabs(((other.points_[i] - other_center) - (this->points_[j1] - this_center)).Length()) > 1e-6) {
+            flag1 = false;
+        }
+        if (fabs(((other.points_[i] - other_center) - (this->points_[j2] - this_center)).Length()) > 1e-6) {
+            flag2 = false;
+        }
+    }
+
+    return flag1 or flag2;
+}
+
 // Операторы ввода и вывода
 std::ostream& operator<<(std::ostream& out, const Figure& f) {
     out << "Figure(";
@@ -112,11 +143,9 @@ std::ostream& operator<<(std::ostream& out, const Figure& f) {
 std::istream& operator>>(std::istream& in, Figure& f) {
     size_t vertices_number;
     in >> vertices_number;
-    Point* points = new Point[vertices_number];
+    f = Figure(vertices_number);
     for (size_t i = 0; i < vertices_number; ++i) {
-        std::cin >> points[i];
+        std::cin >> f.points_[i];
     }
-    f = Figure(vertices_number, points);
-    delete[] points;
     return in;
 }
