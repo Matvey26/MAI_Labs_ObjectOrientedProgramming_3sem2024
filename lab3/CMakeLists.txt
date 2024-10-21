@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(lab1)
+project(lab3)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -19,16 +19,28 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-# Создание библиотеки из main.cpp
-add_library(${PROJECT_NAME}_lib src/main.cpp)
+include_directories(include)
 
-# Добавление тестов
-enable_testing()
+# Добавляем исходные файлы
+set(SOURCES
+    src/Point.cpp
+    src/Figure.cpp
+    src/Octagon.cpp
+    src/Triangle.cpp
+    src/Square.cpp
+    main.cpp
+)
 
-# Создание тестового исполняемого файла и связывание его с Google Test и библиотекой проекта
-add_executable(test_${PROJECT_NAME} tests/unit.cpp)
-target_link_libraries(test_${PROJECT_NAME} PRIVATE gtest_main ${PROJECT_NAME}_lib)
+# Создаем исполняемый файл
+add_executable(${PROJECT_NAME}_main ${SOURCES})
 
-# Добавление тестов в тестовый набор
-include(GoogleTest)
-gtest_discover_tests(test_${PROJECT_NAME})
+# # Добавление тестов
+# enable_testing()
+
+# # Создание тестового исполняемого файла и связывание его с Google Test и библиотекой проекта
+# add_executable(test_${PROJECT_NAME} tests/unit.cpp)
+# target_link_libraries(test_${PROJECT_NAME} PRIVATE gtest_main ${PROJECT_NAME}_lib)
+
+# # Добавление тестов в тестовый набор
+# include(GoogleTest)
+# gtest_discover_tests(test_${PROJECT_NAME})
