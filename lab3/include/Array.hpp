@@ -197,6 +197,20 @@ public:
         alloc_traits::destroy(alloc_, this->arr_ + this->sz_);
     }
 
+    void Resize(size_t count) {
+        if (count < this->sz_) {
+            for (size_t i = count; i < this->sz_; ++i) {
+                alloc_traits::destroy(this->alloc_, this->arr_ + i);
+            }
+            this->sz_ = count;
+        } else {
+            count -= this->sz_;
+            for (size_t i = 0; i < count; ++i) {
+                this->PushBack(T{});
+            }
+        }
+    }
+
     void Resize(size_t count, const T& value) {
         if (count < this->sz_) {
             for (size_t i = count; i < this->sz_; ++i) {

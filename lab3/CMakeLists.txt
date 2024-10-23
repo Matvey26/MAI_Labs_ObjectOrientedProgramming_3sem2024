@@ -67,6 +67,13 @@ target_link_libraries(test_${PROJECT_NAME}_Triangle PRIVATE ${common_libs} ${PRO
 add_executable(test_${PROJECT_NAME}_Square tests/Square_unit.cpp)
 target_link_libraries(test_${PROJECT_NAME}_Square PRIVATE ${common_libs} ${PROJECT_NAME}_Square_lib)
 
+# Общий тест
+add_executable(test_${PROJECT_NAME}_General tests/General_unit.cpp)
+target_link_libraries(test_${PROJECT_NAME}_General PRIVATE ${common_libs})
+target_link_libraries(test_${PROJECT_NAME}_General PRIVATE ${common_libs} ${PROJECT_NAME}_Octagon_lib)
+target_link_libraries(test_${PROJECT_NAME}_General PRIVATE ${common_libs} ${PROJECT_NAME}_Square_lib)
+target_link_libraries(test_${PROJECT_NAME}_General PRIVATE ${common_libs} ${PROJECT_NAME}_Triangle_lib)
+
 # Добавление тестов в тестовый набор
 include(GoogleTest)
 gtest_discover_tests(test_${PROJECT_NAME}_Point)
@@ -74,3 +81,4 @@ gtest_discover_tests(test_${PROJECT_NAME}_Figure)
 gtest_discover_tests(test_${PROJECT_NAME}_Octagon)
 gtest_discover_tests(test_${PROJECT_NAME}_Triangle)
 gtest_discover_tests(test_${PROJECT_NAME}_Square)
+gtest_discover_tests(test_${PROJECT_NAME}_General)
