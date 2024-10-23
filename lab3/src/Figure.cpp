@@ -1,6 +1,7 @@
 #include "Figure.hpp"
 #include <initializer_list>
 #include <cmath>
+#include <algorithm>
 #include <utility>
 #include <iostream>
 
@@ -15,24 +16,18 @@ Figure::Figure(size_t vertices_number) noexcept
     , points_(new Point[this->vertices_number_])
 {}
 
-Figure::Figure(std::initializer_list<std::pair<double, double>> points) noexcept
+Figure::Figure(const std::initializer_list<std::pair<double, double>>& points) noexcept
     : vertices_number_(points.size())
     , points_(new Point[this->vertices_number_]) 
 {
-    size_t i = 0;
-    for (auto point : points) {
-        this->points_[i] = Point(point);
-        ++i;
-    }
+    std::copy(points.begin(), points.end(), this->points_);
 }
 
 Figure::Figure(const Figure& other) noexcept
     : vertices_number_(other.vertices_number_)
     , points_(new Point[this->vertices_number_])
 {
-    for (size_t i = 0; i < other.vertices_number_; ++i) {
-        this->points_[i] = other.points_[i];
-    }
+    std::copy(other.points_, other.points_ + other.vertices_number_, this->points_);
 }
 
 Figure::Figure(Figure&& other) noexcept
@@ -68,6 +63,9 @@ Point* Figure::GetVertices() noexcept {
 
 // Операторы
 Figure::operator double() const noexcept {
+    if (this->vertices_number_ < 3) {
+        return 0.0;
+    }
     double result = 0.0;
     Point first = this->points_[0];
     Point second = this->points_[1];
@@ -85,9 +83,7 @@ Figure& Figure::operator=(const Figure& other) {
         delete[] this->points_;
         this->vertices_number_ = other.vertices_number_;
         this->points_ = new Point[this->vertices_number_];
-        for (size_t i = 0; i < this->vertices_number_; ++i) {
-            this->points_[i] = other.points_[i];
-        }
+        std::copy(other.points_, other.points_ + other.vertices_number_, this->points_);
     }
 
     return *this;
@@ -145,7 +141,7 @@ std::istream& operator>>(std::istream& in, Figure& f) {
     in >> vertices_number;
     f = Figure(vertices_number);
     for (size_t i = 0; i < vertices_number; ++i) {
-        std::cin >> f.points_[i];
+        in >> f.points_[i];
     }
     return in;
 }

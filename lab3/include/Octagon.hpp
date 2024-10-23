@@ -1,11 +1,13 @@
 #pragma once
 #include "Figure.hpp"
+#include <initializer_list>
 
 class Octagon : public Figure {
 public:
     // Конструкторы
     Octagon() noexcept;
     Octagon(const Octagon& other) noexcept;
+    Octagon(const std::initializer_list<std::pair<double, double>>& points);
 
     // Переопределённые методы
     Octagon& operator=(const Octagon& other);

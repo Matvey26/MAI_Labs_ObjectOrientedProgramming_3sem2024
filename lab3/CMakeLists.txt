@@ -34,13 +34,43 @@ set(SOURCES
 # Создаем исполняемый файл
 add_executable(${PROJECT_NAME}_main ${SOURCES})
 
-# # Добавление тестов
-# enable_testing()
+# Добавление тестов
+enable_testing()
 
-# # Создание тестового исполняемого файла и связывание его с Google Test и библиотекой проекта
-# add_executable(test_${PROJECT_NAME} tests/unit.cpp)
-# target_link_libraries(test_${PROJECT_NAME} PRIVATE gtest_main ${PROJECT_NAME}_lib)
+# Создание библиотек проекта
+add_library(${PROJECT_NAME}_Point_lib src/Point.cpp)
+add_library(${PROJECT_NAME}_Figure_lib src/Figure.cpp)
+add_library(${PROJECT_NAME}_Octagon_lib src/Octagon.cpp)
+add_library(${PROJECT_NAME}_Square_lib src/Square.cpp)
+add_library(${PROJECT_NAME}_Triangle_lib src/Triangle.cpp)
 
-# # Добавление тестов в тестовый набор
-# include(GoogleTest)
-# gtest_discover_tests(test_${PROJECT_NAME})
+# Общие зависимости для всех тестов
+set(common_libs gtest_main ${PROJECT_NAME}_Point_lib ${PROJECT_NAME}_Figure_lib)
+
+# Тесты для Point
+add_executable(test_${PROJECT_NAME}_Point tests/Point_unit.cpp)
+target_link_libraries(test_${PROJECT_NAME}_Point PRIVATE gtest_main ${PROJECT_NAME}_Point_lib)
+
+# Тесты для Figure
+add_executable(test_${PROJECT_NAME}_Figure tests/Figure_unit.cpp)
+target_link_libraries(test_${PROJECT_NAME}_Figure PRIVATE ${common_libs})
+
+# Тесты для Octagon
+add_executable(test_${PROJECT_NAME}_Octagon tests/Octagon_unit.cpp)
+target_link_libraries(test_${PROJECT_NAME}_Octagon PRIVATE ${common_libs} ${PROJECT_NAME}_Octagon_lib)
+
+# Тесты для Triangle
+add_executable(test_${PROJECT_NAME}_Triangle tests/Triangle_unit.cpp)
+target_link_libraries(test_${PROJECT_NAME}_Triangle PRIVATE ${common_libs} ${PROJECT_NAME}_Triangle_lib)
+
+# Тесты для Square
+add_executable(test_${PROJECT_NAME}_Square tests/Square_unit.cpp)
+target_link_libraries(test_${PROJECT_NAME}_Square PRIVATE ${common_libs} ${PROJECT_NAME}_Square_lib)
+
+# Добавление тестов в тестовый набор
+include(GoogleTest)
+gtest_discover_tests(test_${PROJECT_NAME}_Point)
+gtest_discover_tests(test_${PROJECT_NAME}_Figure)
+gtest_discover_tests(test_${PROJECT_NAME}_Octagon)
+gtest_discover_tests(test_${PROJECT_NAME}_Triangle)
+gtest_discover_tests(test_${PROJECT_NAME}_Square)

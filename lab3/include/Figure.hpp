@@ -5,11 +5,12 @@
 #include <iostream>
 
 class Figure {
-public:
     // Конструкторы и деструктор
-    Figure() noexcept;
+protected:
     Figure(size_t vertices_number) noexcept;
-    Figure(std::initializer_list<std::pair<double, double>> points) noexcept;
+public:
+    Figure() noexcept;
+    Figure(const std::initializer_list<std::pair<double, double>>& points) noexcept;
     Figure(const Figure& other) noexcept;
     Figure(Figure&& other) noexcept;
     ~Figure() noexcept;

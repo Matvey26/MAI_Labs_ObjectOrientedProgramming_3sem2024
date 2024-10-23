@@ -10,13 +10,17 @@ Square::Square(const Square& other) noexcept : Figure(other) {
     }
 }
 
+Square::Square(const std::initializer_list<std::pair<double, double>>& points) : Square() {
+    if (points.size() != 4) {
+        throw std::runtime_error("Trying initialize Square with not 4 points.");
+    }
+    std::copy(points.begin(), points.end(), this->points_);
+}
+
 // Переопределённый оператор присваивания
 Square& Square::operator=(const Square& other) {
     if (this != &other) {
-        Figure::operator=(other);
-        for (size_t i = 0; i < vertices_number_; ++i) {
-            points_[i] = other.points_[i];
-        }
+        std::copy(other.points_, other.points_ + other.vertices_number_, this->points_);
     }
     return *this;
 }
@@ -36,7 +40,7 @@ std::ostream& operator<<(std::ostream& out, const Square& s) {
 
 std::istream& operator>>(std::istream& in, Square& s) {
     for (size_t i = 0; i < s.vertices_number_; ++i) {
-        std::cin >> s.points_[i];
+        in >> s.points_[i];
     }
     return in;
 }

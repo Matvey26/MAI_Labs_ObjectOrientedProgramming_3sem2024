@@ -10,13 +10,17 @@ Triangle::Triangle(const Triangle& other) noexcept : Figure(other) {
     }
 }
 
+Triangle::Triangle(const std::initializer_list<std::pair<double, double>>& points) : Triangle() {
+    if (points.size() != 3) {
+        throw std::runtime_error("Trying initialize Triangle with not 3 points.");
+    }
+    std::copy(points.begin(), points.end(), this->points_);
+}
+
 // Переопределённый оператор присваивания
 Triangle& Triangle::operator=(const Triangle& other) {
     if (this != &other) {
-        Figure::operator=(other);
-        for (size_t i = 0; i < vertices_number_; ++i) {
-            points_[i] = other.points_[i];
-        }
+        std::copy(other.points_, other.points_ + other.vertices_number_, this->points_);
     }
     return *this;
 }
@@ -36,7 +40,7 @@ std::ostream& operator<<(std::ostream& out, const Triangle& t) {
 
 std::istream& operator>>(std::istream& in, Triangle& t) {
     for (size_t i = 0; i < t.vertices_number_; ++i) {
-        std::cin >> t.points_[i];
+        in >> t.points_[i];
     }
     return in;
 }

@@ -6,6 +6,7 @@ public:
     // Конструкторы
     Triangle() noexcept;
     Triangle(const Triangle& other) noexcept;
+    Triangle(const std::initializer_list<std::pair<double, double>>& points);
 
     // Переопределённые методы
     Triangle& operator=(const Triangle& other);

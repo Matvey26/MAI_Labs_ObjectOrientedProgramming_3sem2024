@@ -6,6 +6,7 @@ public:
     // Конструкторы
     Square() noexcept;
     Square(const Square& other) noexcept;
+    Square(const std::initializer_list<std::pair<double, double>>& points);
 
     // Переопределённые методы
     Square& operator=(const Square& other);

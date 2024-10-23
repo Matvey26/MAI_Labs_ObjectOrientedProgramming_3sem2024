@@ -11,6 +11,7 @@ public:
     Point(double x, double y) noexcept;
     Point(const std::pair<double, double>& p) noexcept;
     Point(const Point& other) noexcept;
+    Point(Point&& other) noexcept;
     ~Point() = default;
 
     // Арифметические операторы
@@ -23,6 +24,13 @@ public:
     Point operator/(double scalar) const;
     Point& operator/=(double scalar);
 
+    // Операторы сравнения
+    bool operator==(const Point& other) const;
+    bool operator<(const Point& other) const;
+    bool operator<=(const Point& other) const;
+    bool operator>(const Point& other) const;
+    bool operator>=(const Point& other) const;
+
     // Оператор копирования
     Point& operator=(const Point& other);
 
@@ -30,18 +38,18 @@ public:
     double& operator[](int index);
     double operator[](int index) const;
 
-    // Вычисление длины вектора
-    double Length() const;
-
-    // Угол между векторами, заметаемый, при вращении вектора *this против часовой стрелки до вектора other
-    double AngleToPoint(const Point& other) const;
-
     // Оператор приведения к std::pair
     operator std::pair<double, double>() const;
 
     // Операторы ввода и вывода
     friend std::ostream& operator<<(std::ostream& out, const Point& p);
     friend std::istream& operator>>(std::istream& in, Point& p);
+
+    // Вычисление длины вектора
+    double Length() const;
+
+    // Угол между векторами, заметаемый, при вращении вектора *this против часовой стрелки до вектора other
+    double AngleToPoint(const Point& other) const;
 
 private:
     double x_ = double{};

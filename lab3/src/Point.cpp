@@ -25,6 +25,14 @@ Point::Point(const Point& other) noexcept
   , y_(other.y_)
 {}
 
+Point::Point(Point&& other) noexcept
+  : x_(other.x_)
+  , y_(other.y_)
+{
+    other.x_ = 0;
+    other.y_ = 0;
+}
+
 // Оператор копирования
 Point& Point::operator=(const Point& other) {
     this->x_ = other.x_;
@@ -64,13 +72,40 @@ Point& Point::operator*=(double scalar) {
 }
 
 Point Point::operator/(double scalar) const {
+    if (scalar == 0.0) {
+        throw std::runtime_error("Division Point by zero.");
+    }
     return Point(this->x_ / scalar, this->y_ / scalar);
 }
 
 Point& Point::operator/=(double scalar) {
+    if (scalar == 0.0) {
+        throw std::runtime_error("Division Point by zero.");
+    }
     this->x_ /= scalar;
     this->y_ /= scalar;
     return *this;
+}
+
+// Операторы сравнения
+bool Point::operator==(const Point& other) const {
+    return this->x_ == other.x_ and this->y_ == other.y_;
+}
+
+bool Point::operator<(const Point& other) const {
+    return this->x_ < other.x_ and this->y_ < other.y_;
+}
+
+bool Point::operator<=(const Point& other) const {
+    return this->x_ <= other.x_ and this->y_ <= other.y_;
+}
+
+bool Point::operator>(const Point& other) const {
+    return this->x_ > other.x_ and this->y_ > other.y_;
+}
+
+bool Point::operator>=(const Point& other) const {
+    return this->x_ >= other.x_ and this->y_ >= other.y_;
 }
 
 // Скалярное произведение
