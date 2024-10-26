@@ -39,13 +39,13 @@ target_link_libraries(test_${PROJECT_NAME}_Figure PRIVATE gtest_main)
 add_executable(test_${PROJECT_NAME}_Nangle tests/NAngle_unit.cpp)
 target_link_libraries(test_${PROJECT_NAME}_Nangle PRIVATE gtest_main)
 
-# # Общий тест
-# add_executable(test_${PROJECT_NAME}_General tests/General_unit.cpp)
-# target_link_libraries(test_${PROJECT_NAME}_General PRIVATE gtest_main)
+# Общий тест
+add_executable(test_${PROJECT_NAME}_General tests/General_unit.cpp)
+target_link_libraries(test_${PROJECT_NAME}_General PRIVATE gtest_main)
 
 # Добавление тестов в тестовый набор
 include(GoogleTest)
 gtest_discover_tests(test_${PROJECT_NAME}_Point)
 gtest_discover_tests(test_${PROJECT_NAME}_Figure)
 gtest_discover_tests(test_${PROJECT_NAME}_Nangle)
-# gtest_discover_tests(test_${PROJECT_NAME}_General)
+gtest_discover_tests(test_${PROJECT_NAME}_General)

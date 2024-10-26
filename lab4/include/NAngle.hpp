@@ -7,11 +7,7 @@ class NAngle : public Figure<T> {
 public:
     // Конструкторы
     NAngle() noexcept : Figure<T>(N) {}
-    NAngle(const NAngle& other) noexcept : Figure<T>(other) {
-        for (size_t i = 0; i < this->vertices_number_; ++i) {
-            this->points_[i] = other.points_[i];
-        }
-    }
+    NAngle(const NAngle& other) noexcept : Figure<T>(other) {}
     NAngle(const std::initializer_list<std::pair<double, double>>& points) : NAngle<T, N>() {
         if (points.size() != N) {
             throw std::runtime_error("Trying initialize " + std::to_string(N) + "-angle with different count of points.");

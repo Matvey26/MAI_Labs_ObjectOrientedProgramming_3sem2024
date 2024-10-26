@@ -1,29 +1,28 @@
 #include <gtest/gtest.h>
 #include "Array.hpp"
 #include "Figure.hpp"
-#include "Octagon.hpp"
-#include "Triangle.hpp"
-#include "Square.hpp"
+#include "NAngle.hpp"
 #include <iostream>
+#include <memory>
 
-std::ostream& PrintFigures(std::ostream& out, const Array<Figure*>& figures_pointers) {
-    for (size_t i = 0; i < figures_pointers.Size(); ++i) {
-        out << "Figure #" << i << ": " << *figures_pointers[i] << '\n';
+std::ostream& PrintFigures(std::ostream& out, const Array<std::unique_ptr<Figure<double>>>& figures) {
+    for (size_t i = 0; i < figures.Size(); ++i) {
+        out << "Figure #" << i << ": " << *figures[i] << '\n';
     }
     return out;
 }
 
-std::ostream& PrintFiguresArea(std::ostream& out, const Array<Figure*>& figures_pointers) {
-    for (size_t i = 0; i < figures_pointers.Size(); ++i) {
-        out << "Figure #" << i << ": " << static_cast<double>(*figures_pointers[i]) << '\n';
+std::ostream& PrintFiguresArea(std::ostream& out, const Array<std::unique_ptr<Figure<double>>>& figures) {
+    for (size_t i = 0; i < figures.Size(); ++i) {
+        out << "Figure #" << i << ": " << static_cast<double>(*figures[i]) << '\n';
     }
     return out;
 }
 
-double GetTotalArea(const Array<Figure*>& figures_pointers) {
+double GetTotalArea(const Array<std::unique_ptr<Figure<double>>>& figures) {
     double result = 0.0;
-    for (size_t i = 0; i < figures_pointers.Size(); ++i) {
-        result += static_cast<double>(*figures_pointers[i]);
+    for (size_t i = 0; i < figures.Size(); ++i) {
+        result += static_cast<double>(*figures[i]);
     }
 
     return result;
@@ -32,23 +31,21 @@ double GetTotalArea(const Array<Figure*>& figures_pointers) {
 // Фикстура для тестов с фигурами
 class FigureTest : public ::testing::Test {
 protected:
-    Octagon oct;
-    Triangle trg;
-    Square sqr;
-    Array<Figure*> figures;
+    std::unique_ptr<Octagon<double>> oct;
+    std::unique_ptr<Triangle<double>> trg;
+    std::unique_ptr<Square<double>> sqr;
+    Array<std::unique_ptr<Figure<double>>> figures;
 
     void SetUp() override {
         // Инициализация тестовых данных
         figures.Resize(3);
-        figures[0] = &oct;
-        figures[1] = &trg;
-        figures[2] = &sqr;
+        oct = std::make_unique<Octagon<double>>(Octagon<double>{{0, 0}, {1, 0}, {2, 1}, {2, 2}, {1, 3}, {0, 3}, {-1, 2}, {-1, 1}});
+        trg = std::make_unique<Triangle<double>>(Triangle<double>{{0, 0}, {1, 0}, {0, 1}});
+        sqr = std::make_unique<Square<double>>(Square<double>{{0, 0}, {1, 0}, {1, 1}, {0, 1}});
 
-        // Инициализация фигур тестовыми значениями
-        std::cin.clear();
-        oct = Octagon{{0,0}, {1,0}, {2,1}, {2,2}, {1,3}, {0,3}, {-1,2}, {-1,1}};
-        trg = Triangle{{0, 0}, {1, 0}, {0, 1}};
-        sqr = Square{{0, 0}, {1, 0}, {1, 1}, {0, 1}};
+        figures[0] = std::move(oct);
+        figures[1] = std::move(trg);
+        figures[2] = std::move(sqr);
     }
 };
 
@@ -57,12 +54,12 @@ TEST_F(FigureTest, PrintFigures) {
     testing::internal::CaptureStdout();
     PrintFigures(std::cout, figures);
     std::string output = testing::internal::GetCapturedStdout();
-    
+
     std::string expected_output =
         "Figure #0: Figure(Point(0, 0), Point(1, 0), Point(2, 1), Point(2, 2), Point(1, 3), Point(0, 3), Point(-1, 2), Point(-1, 1))\n"
         "Figure #1: Figure(Point(0, 0), Point(1, 0), Point(0, 1))\n"
         "Figure #2: Figure(Point(0, 0), Point(1, 0), Point(1, 1), Point(0, 1))\n";
-    
+
     EXPECT_EQ(output, expected_output);
 }
 
@@ -77,7 +74,7 @@ TEST_F(FigureTest, PrintFiguresArea) {
         "Figure #0: 7\n" // Площадь правильного восьмиугольника
         "Figure #1: 0.5\n" // Площадь треугольника
         "Figure #2: 1\n";  // Площадь квадрата
-    
+
     EXPECT_EQ(output, expected_output);
 }
 
@@ -89,14 +86,14 @@ TEST_F(FigureTest, GetTotalArea) {
 
 // Тест на сравнение фигур
 TEST(FigureComparisonTest, CompareFigures) {
-    Figure fig1{{-1, -1}, {1, -1}, {1, 1}, {-1, 1}};
-    Figure fig2{{0, 0}, {2, 0}, {2, 2}, {0, 2}};
+    Figure<double> fig1{{-1, -1}, {1, -1}, {1, 1}, {-1, 1}};
+    Figure<double> fig2{{0, 0}, {2, 0}, {2, 2}, {0, 2}};
     
     // Фигуры с разными координатами должны быть не равны
     EXPECT_TRUE(fig1 == fig2);
     
     // Тест на равные фигуры
-    Figure fig3{{0, 0}, {2, 0}, {2, 2}, {0, 2}};
+    Figure<double> fig3{{0, 0}, {2, 0}, {2, 2}, {0, 2}};
     EXPECT_TRUE(fig2 == fig3);
 }
 
