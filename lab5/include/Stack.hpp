@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <iterator>
+#include <memory_resource>
 #include <type_traits>
 
 #define MIN_CAP static_cast<size_t>(10)
@@ -136,9 +137,6 @@ public:
     /* Итераторы и доступ к элементам */
 
     T& Top() const noexcept {
-        if (this->sz_ == 0) {
-            throw std::logic_error("Accessing an empty stack");
-        }
         return this->data_[this->sz_ - 1];
     }
 
@@ -215,6 +213,13 @@ public:
     void Push(T&& value) noexcept {
         this->CheckCapacity();
         this->allocator_.construct(this->data_ + this->sz_, std::move(value));
+        ++this->sz_;
+    }
+
+    template< class... Args >
+    void Emplace(Args&&... args) {
+        this->CheckCapacity();
+        this->allocator_.construct(this->data_ + this->sz_, std::forward<Args>(args)...);
         ++this->sz_;
     }
 
