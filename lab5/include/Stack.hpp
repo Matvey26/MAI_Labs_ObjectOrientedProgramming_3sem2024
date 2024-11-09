@@ -36,11 +36,11 @@ private:
 
         inline bool operator==(const BaseIterator& other) const noexcept {
             return this->cur_ == other.cur_;
-        };
+        }
 
         inline bool operator!=(const BaseIterator& other) const noexcept {
             return this->cur_ != other.cur_;
-        };
+        }
 
         reference_type operator*() const noexcept {
             return *this->cur_;
@@ -65,7 +65,6 @@ public:
     using Iterator = BaseIterator<false>;
     using ConstIterator = BaseIterator<true>;
 
-
 private:
     allocator_type allocator_;
     size_t sz_;
@@ -77,7 +76,7 @@ public:
     /* Инициализация, копирование и уничтожение */
 
     // Конструктор по умолчанию
-    Stack(allocator_type alloc = {})
+    explicit Stack(const allocator_type& alloc = {}) noexcept
      : allocator_(alloc)
      , sz_(0)
      , cap_(0)
@@ -85,7 +84,7 @@ public:
     {}
 
     // Конструктор копирования
-    Stack(const Stack& other, allocator_type alloc = {})
+    Stack(const Stack& other, const allocator_type& alloc = {})
      : allocator_(alloc)
      , sz_(other.sz_)
      , cap_(other.sz_)
@@ -98,14 +97,14 @@ public:
                 for (size_t j = 0; j < i; ++j) {
                     allocator_traits::destroy(this->allocator_, this->data_ + j);
                 }
-                this->alloc_.deallocate(this->data_, this->cap_);
+                this->allocator_.deallocate(this->data_, this->cap_);
                 throw;
             }
         }
     }
 
     // Конструктор перемещения
-    Stack(Stack&& other, allocator_type alloc = {})
+    Stack(Stack&& other, const allocator_type& alloc = {}) noexcept
      : allocator_(std::move(alloc))
      , sz_(other.sz_)
      , cap_(other.sz_)
@@ -118,7 +117,7 @@ public:
 
     // Конструктор от двух итераторов
     template < std::input_iterator InputIt >
-    Stack(InputIt first, InputIt last, allocator_type alloc = {})
+    Stack(InputIt first, InputIt last, const allocator_type& alloc = {})
      : Stack(alloc)
     {
         for (auto it = first; it != last; ++it) {
@@ -127,7 +126,7 @@ public:
     }
 
     // Деструктор
-    ~Stack() {
+    ~Stack() noexcept {
         while (!this->Empty()) {
             this->Pop();
         }
@@ -143,28 +142,19 @@ public:
         return this->data_[this->sz_ - 1];
     }
 
-    Iterator Begin() const {
-        if (this->sz_ == 0) {
-            throw std::logic_error("Accessing an empty stack");
-        }
+    inline Iterator Begin() const noexcept {
         return Iterator(this->data_);
     }
 
-    Iterator End() const {
+    inline Iterator End() const noexcept {
         return Iterator(this->data_ + this->sz_);
     }
 
-    ConstIterator CBegin() const {
-        if (this->sz_ == 0) {
-            throw std::logic_error("Accessing an empty stack");
-        }
+    inline ConstIterator CBegin() const noexcept {
         return ConstIterator(this->data_);
     }
 
-    ConstIterator CEnd() const {
-        if (this->sz_ == 0) {
-            throw std::logic_error("Accessing an empty stack");
-        }
+    inline ConstIterator CEnd() const noexcept {
         return ConstIterator(this->data_ + this->sz_);
     }
 
@@ -174,7 +164,7 @@ public:
         return this->sz_ == 0;
     }
 
-    bool Size() const noexcept {
+    size_t Size() const noexcept {
         return this->sz_;
     }
 
@@ -222,13 +212,13 @@ public:
         ++this->sz_;
     }
 
-    void Push(T&& value) {
+    void Push(T&& value) noexcept {
         this->CheckCapacity();
         this->allocator_.construct(this->data_ + this->sz_, std::move(value));
         ++this->sz_;
     }
 
-    void Pop() {
+    void Pop() noexcept {
         --this->sz_;
         allocator_traits::destroy(this->allocator_, this->data_ + this->sz_);
     }
