@@ -2,6 +2,21 @@
 #include "../include/Stack.hpp"
 #include "../include/MapDynamicMemoryResource.hpp"
 
+// Глобальные переменные для отслеживания вызовов new/delete
+size_t allocation_count = 0;
+size_t deallocation_count = 0;
+
+// Переопределение операторов new и delete
+void* operator new(size_t size) {
+    ++allocation_count;
+    return std::malloc(size);
+}
+
+void operator delete(void* ptr) noexcept {
+    ++deallocation_count;
+    std::free(ptr);
+}
+
 TEST(StackTest, DefaultConstructor) {
     Stack<int> stack;
     EXPECT_TRUE(stack.Empty());
@@ -112,7 +127,7 @@ TEST(MapDynamicMemoryResourceTest, AllocationDeallocation) {
     EXPECT_GE(pool.get_free_blocks_count(), 1);
 }
 
-TEST(MapDynamicMemoryResourceTest, ReuseFreedMemoryWithGlobalNewDelete) {
+TEST(MapDynamicMemoryResourceTest, ReuseFreedMemory) {
     MapDynamicMemoryResource pool;
     std::pmr::polymorphic_allocator<int> allocator(&pool);
 
@@ -133,7 +148,21 @@ TEST(MapDynamicMemoryResourceTest, ReuseFreedMemoryWithGlobalNewDelete) {
     EXPECT_EQ(pool.get_free_blocks_count(), 0);
 }
 
-// Тест для проверки поведения с большим количеством элементов
+TEST(MapDynamicMemoryResourceTest, MemoryCleanupOnDestruction) {
+    allocation_count = 0;
+    deallocation_count = 0;
+
+    {
+        MapDynamicMemoryResource memory_resource;
+        
+        void* ptr1 = memory_resource.allocate(64);
+        void* ptr2 = memory_resource.allocate(128);
+    }
+
+    // Проверяем, что все выделенные области памяти освобождены
+    EXPECT_EQ(allocation_count, deallocation_count);
+}
+
 TEST(StackTest, LargePushAndPop) {
     MapDynamicMemoryResource pool;
     std::pmr::polymorphic_allocator<int> allocator(&pool);

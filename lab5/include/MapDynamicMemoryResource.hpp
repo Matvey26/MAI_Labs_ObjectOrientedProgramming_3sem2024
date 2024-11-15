@@ -12,6 +12,18 @@ private:
     std::multimap<size_t, void*> free_blocks;
 
 public:
+    ~MapDynamicMemoryResource() {
+        for (auto& block : used_blocks) {
+            ::operator delete(block.first);
+        }
+        used_blocks.clear();
+
+        for (auto& block : free_blocks) {
+            ::operator delete(block.second);
+        }
+        free_blocks.clear();
+    }
+
     void* do_allocate(size_t bytes, size_t alignment) override {
         auto it = free_blocks.lower_bound(bytes);
         if (it == free_blocks.end()) {
