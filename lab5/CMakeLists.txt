@@ -21,13 +21,13 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(main_${PROJECT_NAME} main.cpp)
 
-# # Добавление тестов
-# enable_testing()
+# Добавление тестов
+enable_testing()
 
-# # Создание тестового исполняемого файла и связывание его с Google Test и библиотекой проекта
-# add_executable(test_${PROJECT_NAME} tests/unit.cpp)
-# target_link_libraries(test_${PROJECT_NAME} PRIVATE gtest_main ${PROJECT_NAME}_lib)
+# Создание тестового исполняемого файла и связывание его с Google Test и библиотекой проекта
+add_executable(test_${PROJECT_NAME} tests/unit.cpp)
+target_link_libraries(test_${PROJECT_NAME} PRIVATE gtest_main)
 
-# # Добавление тестов в тестовый набор
-# include(GoogleTest)
-# gtest_discover_tests(test_${PROJECT_NAME})
+# Добавление тестов в тестовый набор
+include(GoogleTest)
+gtest_discover_tests(test_${PROJECT_NAME})

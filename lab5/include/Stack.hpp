@@ -52,7 +52,7 @@ private:
         }
 
         BaseIterator& operator++() noexcept {
-            ++this->cur_;
+            --this->cur_;
             return *this;
         }
 
@@ -141,11 +141,11 @@ public:
     }
 
     inline Iterator Begin() const noexcept {
-        return Iterator(this->data_);
+        return Iterator(this->data_ + this->sz_ - 1);
     }
 
     inline Iterator End() const noexcept {
-        return Iterator(this->data_ + this->sz_);
+        return Iterator(this->data_ - 1);
     }
 
     inline ConstIterator CBegin() const noexcept {

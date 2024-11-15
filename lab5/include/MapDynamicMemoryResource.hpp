@@ -4,6 +4,8 @@
 #include <memory_resource>
 #include <map>
 
+#include <iostream>
+
 class MapDynamicMemoryResource : public std::pmr::memory_resource {
 private:
     std::map<void*, size_t> used_blocks;
@@ -22,8 +24,9 @@ public:
         free_blocks.erase(it);
 
         used_blocks[block_ptr] = bytes;
-        free_blocks.insert({block_size - bytes, static_cast<char*>(block_ptr) + bytes});
-
+        if (block_size > bytes) {
+            free_blocks.insert({block_size - bytes, static_cast<char*>(block_ptr) + bytes});
+        }
         return block_ptr;
     }
 
@@ -41,5 +44,13 @@ public:
 
     bool do_is_equal(const std::pmr::memory_resource& other) const noexcept override {
         return this == &other;
+    }
+
+    size_t get_used_blocks_count() const noexcept {
+        return this->used_blocks.size();
+    }
+
+    size_t get_free_blocks_count() const noexcept {
+        return this->free_blocks.size();
     }
 };
