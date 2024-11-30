@@ -1,18 +1,8 @@
 #include "../include/Squirrel.hpp"
 #include <iostream>
 
-Squirrel::Squirrel(const Point& position) : NPC("Squirrel", position) {}
-
-void Squirrel::Save() const {
-    // Not implemented
-}
-
-void Squirrel::Print() const {
-    std::cout << this->GetType() << '_' << this->GetId();
-    if (!this->IsAlive()) {
-        std::cout << "(dead)";
-    }
-}
+Squirrel::Squirrel(const Point& position, bool is_alive)
+  : NPC("Squirrel", position, is_alive) {}
 
 // Accept
 bool Squirrel::LetsFight(NPC* other) {

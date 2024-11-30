@@ -1,6 +1,7 @@
 #pragma once
 
 #include <utility>
+#include <iostream>
 
 class Point {
  private:
@@ -38,4 +39,8 @@ class Point {
   Point& operator-=(const Point& other);
   Point& operator*=(double number);
   Point& operator/=(double number);
+
+  // Ввод-вывод
+  friend std::ostream& operator<<(std::ostream& out, const Point& point);
+  friend std::istream& operator>>(std::istream& in, Point& point);
 };

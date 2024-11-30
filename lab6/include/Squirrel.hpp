@@ -5,10 +5,7 @@
 
 class Squirrel : public NPC {
 public:
-    Squirrel(const Point& position);
-
-    void Save() const override;
-    void Print() const override;
+    Squirrel(const Point& position, bool is_alive = true);
 
     // Accept
     bool LetsFight(NPC* other) override;

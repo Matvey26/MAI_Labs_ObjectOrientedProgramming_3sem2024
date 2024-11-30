@@ -5,10 +5,7 @@
 
 class Druid : public NPC {
 public:
-    Druid(const Point& position);
-
-    void Save() const override;
-    void Print() const override;
+    Druid(const Point& position, bool is_alive = true);
 
     // Accept
     bool LetsFight(NPC* other) override;

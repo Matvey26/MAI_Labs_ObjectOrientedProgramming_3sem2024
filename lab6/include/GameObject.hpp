@@ -22,12 +22,11 @@ protected:
 public:
     int GetId() const;
 
-    virtual void Save() const = 0;
-    virtual void Print() const = 0;
-
     Point GetPosition() const;
     void SetPosition(const Point& point);
 
     void AttachObserver(std::shared_ptr<IGameObjectObserver> obs);
     void Notify(const std::string& message);
+
+    virtual ~GameObject() {}
 };

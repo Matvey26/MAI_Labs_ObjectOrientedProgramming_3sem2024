@@ -1,18 +1,8 @@
 #include "../include/Werewolf.hpp"
 #include <iostream>
 
-Werewolf::Werewolf(const Point& position) : NPC("Werewolf", position) {}
-
-void Werewolf::Save() const {
-    // Not implemented
-}
-
-void Werewolf::Print() const {
-    std::cout << this->GetType() << '_' << this->GetId();
-    if (!this->IsAlive()) {
-        std::cout << "(dead)";
-    }
-}
+Werewolf::Werewolf(const Point& position, bool is_alive)
+  : NPC("Werewolf", position, is_alive) {}
 
 // Accept
 bool Werewolf::LetsFight(NPC* other) {

@@ -5,10 +5,7 @@
 
 class Werewolf : public NPC {
 public:
-    Werewolf(const Point& position);
-
-    void Save() const override;
-    void Print() const override;
+    Werewolf(const Point& position, bool is_alive = true);
 
     // Accept
     bool LetsFight(NPC* other) override;
