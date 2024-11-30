@@ -1,17 +1,17 @@
 #pragma once
 
-#include "INPC.hpp"
+#include "NPC.hpp"
 #include <memory>
 
-class Druid : public INPC {
+class Druid : public NPC {
 public:
-    Druid() : INPC("Druid") {}
+    Druid() : NPC("Druid") {}
 
     void Save() const override;
     void Print() const override;
 
     // Accept
-    bool LetsFight(INPC* other) override;
+    bool LetsFight(NPC* other) override;
     // Visit
-    bool Defend(INPC* other) override;
+    bool Defend(NPC* other) override;
 };

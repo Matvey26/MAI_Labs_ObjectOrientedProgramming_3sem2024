@@ -19,6 +19,8 @@ protected:
     GameObject() {}
 
 public:
+    int GetId() const;
+
     virtual void Save() const = 0;
     virtual void Print() const = 0;
 

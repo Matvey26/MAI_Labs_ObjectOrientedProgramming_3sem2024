@@ -2,6 +2,10 @@
 
 #include "../include/GameObject.hpp"
 
+int GameObject::GetId() const {
+    return this->id_;
+}
+
 Point GameObject::GetPosition() const {
     return position_;
 }

@@ -1,17 +1,19 @@
 #pragma once
 
 #include "GameObject.hpp"
-#include <vector>
+#include <unordered_set>
 #include <memory>
 
 class Game {
 private:
-    std::vector<std::unique_ptr<GameObject>> game_objects_;
+    std::unordered_set<std::shared_ptr<GameObject>> game_objects_;
 
 public:
     void SaveObjects() const;
     void PrintObjects() const;
     
-    void AddObject(const GameObject& object);
-    void DeleteObject(int id);
+    void AddObject(std::shared_ptr<GameObject> object);
+    void DeleteObject(std::shared_ptr<GameObject> object);
+
+    void StartBattle();
 };
