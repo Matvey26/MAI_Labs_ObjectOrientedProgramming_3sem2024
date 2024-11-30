@@ -9,4 +9,9 @@ public:
 
     void Save() const override;
     void Print() const override;
+
+    // Accept
+    bool LetsFight(INPC* other) override;
+    // Visit
+    bool Defend(INPC* other) override;
 };

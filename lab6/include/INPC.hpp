@@ -14,4 +14,9 @@ public:
     virtual void Print() const = 0;
 
     std::string GetType() const;
+
+    // Accept
+    virtual bool LetsFight(INPC* other) = 0;
+    // Visit
+    virtual bool Defend(INPC* other) = 0;
 };

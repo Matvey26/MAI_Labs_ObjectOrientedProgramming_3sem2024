@@ -17,7 +17,3 @@ void Game::AddObject(const GameObject& object) {
 void Game::DeleteObject(int id) {
     // Not implemented
 }
-
-void Game::Accept(IGameVisitor& visitor) {
-    visitor.Visit(*this);
-}

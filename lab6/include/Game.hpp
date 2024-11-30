@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GameObject.hpp"
-#include "IGameVisitor.hpp"
 #include <vector>
 #include <memory>
 
@@ -15,6 +14,4 @@ public:
     
     void AddObject(const GameObject& object);
     void DeleteObject(int id);
-
-    void Accept(IGameVisitor& visitor);
 };
