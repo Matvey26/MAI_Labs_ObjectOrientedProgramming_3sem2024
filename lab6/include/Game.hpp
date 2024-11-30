@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GameObject.hpp"
-#include "IGameObjectObserver.hpp"
+#include "GameObjectObservers.hpp"
 #include <unordered_set>
 #include <memory>
 #include <vector>

@@ -40,6 +40,10 @@ class Point {
   Point& operator*=(double number);
   Point& operator/=(double number);
 
+  // Сравнения
+  bool operator==(const Point& other) const;
+  bool operator!=(const Point& other) const;
+
   // Ввод-вывод
   friend std::ostream& operator<<(std::ostream& out, const Point& point);
   friend std::istream& operator>>(std::istream& in, Point& point);

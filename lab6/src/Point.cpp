@@ -76,6 +76,15 @@ Point& Point::operator/=(double number) {
     return *this;
 }
 
+// Сравнения
+bool Point::operator==(const Point& other) const {
+    return this->x_ == other.x_ and this->y_ == other.y_;
+}
+
+bool Point::operator!=(const Point& other) const {
+    return this->x_ != other.x_ or this->y_ != other.y_;
+}
+
 // Ввод-вывод
 std::ostream& operator<<(std::ostream& out, const Point& point) {
     out << point.x_ << ' ' << point.y_;

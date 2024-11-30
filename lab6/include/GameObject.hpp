@@ -4,7 +4,7 @@
 #include <utility>
 #include <memory>
 #include <vector>
-#include <IGameObjectObserver.hpp>
+#include <GameObjectObservers.hpp>
 
 // Класс игрового объекта
 
@@ -15,11 +15,11 @@ private:
     Point position_;
     std::vector<std::shared_ptr<IGameObjectObserver>> observers_;
 
-protected:
+
+public:
     GameObject();
     GameObject(const Point& position);
 
-public:
     int GetId() const;
 
     Point GetPosition() const;

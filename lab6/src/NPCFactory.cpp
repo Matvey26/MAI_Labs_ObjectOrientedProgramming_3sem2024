@@ -8,22 +8,22 @@
 #include <sstream>
 
 // Инициализация реестра типов NPC
-std::unordered_map<std::string, std::function<std::unique_ptr<NPC>(const Point&, bool)>> NPCFactory::InitializeRegistry() {
-    std::unordered_map<std::string, std::function<std::unique_ptr<NPC>(const Point&, bool)>> registry;
+std::unordered_map<std::string, std::function<std::shared_ptr<NPC>(const Point&, bool)>> NPCFactory::InitializeRegistry() {
+    std::unordered_map<std::string, std::function<std::shared_ptr<NPC>(const Point&, bool)>> registry;
     registry["Squirrel"] = [](const Point& position, bool is_alive) {
-        return std::make_unique<Squirrel>(position, is_alive);
+        return std::make_shared<Squirrel>(position, is_alive);
     };
     registry["Werewolf"] = [](const Point& position, bool is_alive) {
-        return std::make_unique<Werewolf>(position, is_alive);
+        return std::make_shared<Werewolf>(position, is_alive);
     };
     registry["Druid"] = [](const Point& position, bool is_alive) {
-        return std::make_unique<Druid>(position, is_alive);
+        return std::make_shared<Druid>(position, is_alive);
     };
     return registry;
 }
 
 
-std::unique_ptr<NPC> NPCFactory::CreateNPC(const std::string& type, const Point& position, bool is_alive) {
+std::shared_ptr<NPC> NPCFactory::CreateNPC(const std::string& type, const Point& position, bool is_alive) {
     static const auto npc_registry = InitializeRegistry();
     auto it = npc_registry.find(type);
     if (it != npc_registry.end()) {
@@ -33,7 +33,7 @@ std::unique_ptr<NPC> NPCFactory::CreateNPC(const std::string& type, const Point&
 }
 
 
-void NPCFactory::DumpNPCToStream(std::ostream& out, const std::unique_ptr<NPC>& npc, bool dump_id) {
+void NPCFactory::DumpNPCToStream(std::ostream& out, const std::shared_ptr<NPC>& npc, bool dump_id) {
     if (!out) {
         throw std::ios_base::failure("Output stream is not valid.");
     }
@@ -50,7 +50,7 @@ void NPCFactory::DumpNPCToStream(std::ostream& out, const std::unique_ptr<NPC>& 
 }
 
 
-std::unique_ptr<NPC> NPCFactory::LoadNPCFromStream(std::istream& in) {
+std::shared_ptr<NPC> NPCFactory::LoadNPCFromStream(std::istream& in) {
     if (!in) {
         throw std::ios_base::failure("Input stream is not valid.");
     }
