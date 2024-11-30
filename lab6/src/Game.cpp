@@ -2,18 +2,6 @@
 #include "../include/NPC.hpp"
 #include <iostream>
 
-// void Game::PrintObjects() const {
-//     std::cout << "RPG Game.\n";
-//     std::cout << "Game objects: {\n";
-//     int number = 0;
-//     for (auto i : this->game_objects_) {
-//         std::cout << "    " << ++number << ". ";
-//         i->Print();
-//         std::cout << '\n';
-//     }
-//     std::cout << '}' << std::endl;
-// }
-
 void Game::AttachObserver(std::shared_ptr<IGameObjectObserver> observer) {
     this->common_observers_.push_back(observer);
     for (auto& i : this->game_objects_) {

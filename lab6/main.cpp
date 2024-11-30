@@ -1,8 +1,7 @@
 #include <iostream>
 #include "include/Game.hpp"
 #include "include/NPCFactory.hpp"
-#include "include/LogGameObjectObserver.hpp"
-#include "include/PrintGameObjectObserver.hpp"
+#include "include/GameObjectObservers.hpp"
 #include <memory>
 
 int main() {
