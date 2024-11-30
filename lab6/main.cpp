@@ -24,6 +24,7 @@ int main() {
     game.AddObject(std::move(d1));
     game.AddObject(std::move(d2));
     game.AddObject(std::move(d3));
+    game.AddObject(std::move(d4));
 
     game.StartBattle(10);
 }
