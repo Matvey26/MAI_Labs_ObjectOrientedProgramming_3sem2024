@@ -5,7 +5,7 @@
 
 class Werewolf : public NPC {
 public:
-    Werewolf() : NPC("Werewolf") {}
+    Werewolf(const Point& position);
 
     void Save() const override;
     void Print() const override;

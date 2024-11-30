@@ -16,7 +16,8 @@ private:
     std::vector<std::shared_ptr<IGameObjectObserver>> observers_;
 
 protected:
-    GameObject() {}
+    GameObject();
+    GameObject(const Point& position);
 
 public:
     int GetId() const;
@@ -30,5 +31,3 @@ public:
     void AttachObserver(std::shared_ptr<IGameObjectObserver> obs);
     void Notify(const std::string& message);
 };
-
-int GameObject::counter_ = 0;

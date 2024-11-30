@@ -1,7 +1,7 @@
-#pragma once
-
 #include "../include/Squirrel.hpp"
 #include <iostream>
+
+Squirrel::Squirrel(const Point& position) : NPC("Squirrel", position) {}
 
 void Squirrel::Save() const {
     // Not implemented
@@ -9,6 +9,9 @@ void Squirrel::Save() const {
 
 void Squirrel::Print() const {
     std::cout << this->GetType() << '_' << this->GetId();
+    if (!this->IsAlive()) {
+        std::cout << "(dead)";
+    }
 }
 
 // Accept

@@ -15,5 +15,5 @@ public:
     void AddObject(std::shared_ptr<GameObject> object);
     void DeleteObject(std::shared_ptr<GameObject> object);
 
-    void StartBattle();
+    void StartBattle(double distance);
 };

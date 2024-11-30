@@ -1,5 +1,3 @@
-#pragma once
-
 #include "../include/LogGameObjectObserver.hpp"
 
 LogGameObjectObserver::LogGameObjectObserver(const std::string& path_to_logfile)

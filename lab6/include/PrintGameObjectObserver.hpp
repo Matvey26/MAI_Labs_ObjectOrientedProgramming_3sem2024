@@ -8,7 +8,7 @@ private:
     std::string path_to_logfile_;
 
 public:
-    PrintGameObjectObserver(const std::string& path_to_logfile) {}
+    PrintGameObjectObserver(const std::string& path_to_logfile);
 
     void Update(const std::string& message) override;
 };

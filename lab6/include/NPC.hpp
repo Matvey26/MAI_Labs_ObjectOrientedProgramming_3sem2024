@@ -6,14 +6,17 @@
 class NPC : public GameObject {
 protected:
     std::string type_;
+    bool is_alive_;
 
 public:
-    NPC(const std::string& type) : GameObject(), type_(type) {}
+    NPC(const std::string& type, const Point& pos);
 
     virtual void Save() const = 0;
     virtual void Print() const = 0;
 
     std::string GetType() const;
+
+    bool IsAlive() const;
 
 /*
 Класс NPC одновременно visitor и acceptor.  

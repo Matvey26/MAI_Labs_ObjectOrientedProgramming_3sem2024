@@ -19,16 +19,28 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-# Создание библиотеки из main.cpp
-add_library(${PROJECT_NAME}_lib src/main.cpp)
 
-# Добавление тестов
-enable_testing()
 
-# Создание тестового исполняемого файла и связывание его с Google Test и библиотекой проекта
-add_executable(test_${PROJECT_NAME} tests/unit.cpp)
-target_link_libraries(test_${PROJECT_NAME} PRIVATE gtest_main ${PROJECT_NAME}_lib)
+include_directories(include)
 
-# Добавление тестов в тестовый набор
-include(GoogleTest)
-gtest_discover_tests(test_${PROJECT_NAME})
+# Собираем список всех .cpp файлов в директории src
+file(GLOB_RECURSE SRC_FILES "src/*.cpp")
+
+# Добавляем main.cpp из корневого каталога
+list(APPEND SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
+
+# Создаем исполняемый файл MyExecutable
+add_executable(MyExecutable ${SRC_FILES})
+
+
+
+# # Добавление тестов
+# enable_testing()
+
+# # Создание тестового исполняемого файла и связывание его с Google Test и библиотекой проекта
+# add_executable(test_${PROJECT_NAME} tests/unit.cpp)
+# target_link_libraries(test_${PROJECT_NAME} PRIVATE gtest_main ${PROJECT_NAME}_lib)
+
+# # Добавление тестов в тестовый набор
+# include(GoogleTest)
+# gtest_discover_tests(test_${PROJECT_NAME})

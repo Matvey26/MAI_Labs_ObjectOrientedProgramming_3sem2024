@@ -1,6 +1,8 @@
-#pragma once
-
 #include "../include/GameObject.hpp"
+
+GameObject::GameObject() : id_(++counter_), position_(0) {}
+
+GameObject::GameObject(const Point& position) : id_(++counter_), position_(position) {}
 
 int GameObject::GetId() const {
     return this->id_;

@@ -5,7 +5,7 @@
 
 class Druid : public NPC {
 public:
-    Druid() : NPC("Druid") {}
+    Druid(const Point& position);
 
     void Save() const override;
     void Print() const override;

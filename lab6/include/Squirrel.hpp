@@ -5,7 +5,7 @@
 
 class Squirrel : public NPC {
 public:
-    Squirrel() : NPC("Squirrel") {}
+    Squirrel(const Point& position);
 
     void Save() const override;
     void Print() const override;
