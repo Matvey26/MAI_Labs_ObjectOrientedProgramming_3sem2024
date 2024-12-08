@@ -2,7 +2,7 @@
 #include <iostream>
 
 Werewolf::Werewolf(const Point& position, bool is_alive)
-  : NPC("Werewolf", position, is_alive) {}
+  : NPC("Werewolf", position, 40.0, 5.0, is_alive) {}
 
 // Accept
 bool Werewolf::LetsFight(NPC* other) {

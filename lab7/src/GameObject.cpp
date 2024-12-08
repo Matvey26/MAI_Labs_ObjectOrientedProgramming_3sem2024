@@ -12,8 +12,11 @@ Point GameObject::GetPosition() const {
     return position_;
 }
 
-void GameObject::SetPosition(const Point& point) {
-    position_ = point;
+void GameObject::SetPosition(const Point& point, double min, double max) {
+    position_ = Point{
+        std::min(max, std::max(min, point.GetX())),
+        std::min(max, std::max(min, point.GetY()))
+    };
 }
 
 void GameObject::AttachObserver(std::shared_ptr<IGameObjectObserver> obs) {

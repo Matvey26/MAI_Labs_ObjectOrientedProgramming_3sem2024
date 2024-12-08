@@ -2,7 +2,7 @@
 #include <iostream>
 
 Druid::Druid(const Point& position, bool is_alive)
-  : NPC("Druid", position, is_alive) {}
+  : NPC("Druid", position, 10.0, 10.0, is_alive) {}
 
 // Accept
 bool Druid::LetsFight(NPC* other) {

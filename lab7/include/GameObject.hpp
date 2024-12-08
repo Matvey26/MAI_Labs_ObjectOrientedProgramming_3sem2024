@@ -23,7 +23,7 @@ public:
     int GetId() const;
 
     Point GetPosition() const;
-    void SetPosition(const Point& point);
+    void SetPosition(const Point& point, double min, double max);
 
     void AttachObserver(std::shared_ptr<IGameObjectObserver> obs);
     void Notify(const std::string& message);
