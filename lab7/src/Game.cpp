@@ -41,7 +41,7 @@ void Game::PrintObjs() {
 
         if (x >= this->MIN_FIELD_SIZE && x < this->MAX_FIELD_SIZE && y >= this->MIN_FIELD_SIZE && y < this->MAX_FIELD_SIZE) {
             std::shared_ptr<NPC> npc = std::dynamic_pointer_cast<NPC>(obj);
-            if (npc) {
+            if (npc and npc->IsAlive()) {
                 // Используем первый символ типа NPC
                 field[y][x] = npc->GetType()[0];
             } else {
@@ -62,7 +62,6 @@ void Game::PrintObjs() {
 
 void Game::StartMovement() {
     std::lock_guard<std::mutex> lock(this->game_objects_mutex_);
-    std::cout << "StartMovement!\n";
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -88,35 +87,38 @@ void Game::StartMovement() {
 
 void Game::StartBattle() {
     std::lock_guard<std::mutex> lock(this->game_objects_mutex_);
-    std::cout << "StartBattle!\n";
-    // for (auto& i : this->game_objects_) {
-    //     std::shared_ptr<NPC> i_npc = std::dynamic_pointer_cast<NPC>(i);
-    //     if (!i_npc) continue;
 
-    //     for (auto& j : this->game_objects_) {
-    //         if (i == j) continue;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dice(0, 6);
 
-    //         std::shared_ptr<NPC> j_npc = std::dynamic_pointer_cast<NPC>(j);
-    //         if (!j_npc) continue;
-    //         if (!i_npc->IsAlive() or !j_npc->IsAlive()) continue;
-    //         if ((i_npc->GetPosition() - j_npc->GetPosition()).Length() > distance) continue;
+    // Оповещение
+    auto make_message = [](std::shared_ptr<NPC> npc_win, std::shared_ptr<NPC> npc_lose){
+        std::string name_win = npc_win->GetType() + '_' + std::to_string(npc_win->GetId());
+        std::string name_lose = npc_lose->GetType() + '_' + std::to_string(npc_lose->GetId());
+        return "NPC " + name_lose + " was defeated by NPC " + name_win;
+    };
 
-    //         // Само сражение
-    //         i_npc->LetsFight(j_npc.get());
-    //         j_npc->LetsFight(i_npc.get());
+    for (auto& i : this->game_objects_) {
+        std::shared_ptr<NPC> attacking = std::dynamic_pointer_cast<NPC>(i);
+        if (!attacking or !attacking->IsAlive()) continue;
+        for (auto& j : this->game_objects_) {
+            std::shared_ptr<NPC> defending = std::dynamic_pointer_cast<NPC>(j);
+            if (!defending or !defending->IsAlive() or attacking == defending) continue;
 
-    //         // Оповещение
-    //         auto make_message = [](std::shared_ptr<NPC> npc_win, std::shared_ptr<NPC> npc_lose){
-    //             std::string name_win = npc_win->GetType() + '_' + std::to_string(npc_win->GetId());
-    //             std::string name_lose = npc_lose->GetType() + '_' + std::to_string(npc_lose->GetId());
-    //             return "NPC " + name_lose + " was defeated by NPC " + name_win;
-    //         };
-    //         if (!i_npc->IsAlive()) {
-    //             i_npc->Notify(make_message(j_npc, i_npc));
-    //         }
-    //         if (!j_npc->IsAlive()) {
-    //             j_npc->Notify(make_message(i_npc, j_npc));
-    //         }
-    //     }
-    // }
+            // Проверяем дистанцию атаки
+            double distance = (attacking->GetPosition() - defending->GetPosition()).Length();
+            if (distance > attacking->GetKillingDistance()) continue;
+
+            // Нападение
+            if (attacking->CanFight(defending.get())) {
+                int strength = dice(gen);
+                int armor = dice(gen);
+                if (strength > armor) {
+                    defending->Die();
+                    defending->Notify(make_message(attacking, defending));
+                }
+            }
+        }
+    }
 }

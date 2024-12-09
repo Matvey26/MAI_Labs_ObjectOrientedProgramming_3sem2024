@@ -5,19 +5,16 @@ Druid::Druid(const Point& position, bool is_alive)
   : NPC("Druid", position, 10.0, 10.0, is_alive) {}
 
 // Accept
-bool Druid::LetsFight(NPC* other) {
-    return !other->Defend(this);
+bool Druid::CanFight(NPC* other) {
+    return !other->CanDefend(this);
 }
 
 // Visit
-bool Druid::Defend(NPC* other) {
-    bool result = this->is_alive_;
+bool Druid::CanDefend(NPC* other) {
     if (other->GetType() == "Squirrel") {
-        result = false;
+        return false;
     } else if (other->GetType() == "Werewolf") {
-        result = false;
+        return false;
     }
-
-    this->is_alive_ = result;
-    return result;
+    return true;
 }

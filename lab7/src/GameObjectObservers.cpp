@@ -8,7 +8,7 @@ LogGameObjectObserver::LogGameObjectObserver(const std::string& path_to_logfile)
 
 void LogGameObjectObserver::Update(const std::string& message) {
     std::ofstream log_file;
-    log_file.open(path_to_logfile_);
+    log_file.open(path_to_logfile_, std::ios::app);
 
     log_file << message << '\n';
 }

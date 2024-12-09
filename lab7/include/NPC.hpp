@@ -16,13 +16,15 @@ public:
     std::string GetType() const;
     bool IsAlive() const;
     double GetMaxTravelLength() const;
+    double GetKillingDistance() const;
+    void Die();
 
 /*
 Класс NPC одновременно visitor и acceptor.  
 */
 
     // Accept
-    virtual bool LetsFight(NPC* other) = 0;
+    virtual bool CanFight(NPC* other) = 0;
     // Visit
-    virtual bool Defend(NPC* other) = 0;
+    virtual bool CanDefend(NPC* other) = 0;
 };

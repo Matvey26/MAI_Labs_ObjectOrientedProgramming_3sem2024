@@ -8,7 +8,7 @@ public:
     Werewolf(const Point& position, bool is_alive = true);
 
     // Accept
-    bool LetsFight(NPC* other) override;
+    bool CanFight(NPC* other) override;
     // Visit
-    bool Defend(NPC* other) override;
+    bool CanDefend(NPC* other) override;
 };

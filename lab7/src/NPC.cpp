@@ -18,3 +18,11 @@ bool NPC::IsAlive() const {
 double NPC::GetMaxTravelLength() const {
     return this->max_travel_length_;
 }
+
+double NPC::GetKillingDistance() const {
+    return this->killing_distance_;
+}
+
+void NPC::Die() {
+    this->is_alive_ = false;
+}

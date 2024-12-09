@@ -5,17 +5,14 @@ Werewolf::Werewolf(const Point& position, bool is_alive)
   : NPC("Werewolf", position, 40.0, 5.0, is_alive) {}
 
 // Accept
-bool Werewolf::LetsFight(NPC* other) {
-    return !other->Defend(this);
+bool Werewolf::CanFight(NPC* other) {
+    return !other->CanDefend(this);
 }
 
 // Visit
-bool Werewolf::Defend(NPC* other) {
-    bool result = this->is_alive_;
+bool Werewolf::CanDefend(NPC* other) {
     if (other->GetType() == "Squirrel") {
-        result = false;
+        return false;
     }
-
-    this->is_alive_ = result;
-    return result;
+    return true;
 }

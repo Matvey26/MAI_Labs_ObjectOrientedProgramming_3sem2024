@@ -5,11 +5,11 @@ Squirrel::Squirrel(const Point& position, bool is_alive)
   : NPC("Squirrel", position, 5.0, 5.0, is_alive) {}
 
 // Accept
-bool Squirrel::LetsFight(NPC* other) {
-    return !other->Defend(this);
+bool Squirrel::CanFight(NPC* other) {
+    return !other->CanDefend(this);
 }
 
 // Visit
-bool Squirrel::Defend(NPC* other) {
+bool Squirrel::CanDefend(NPC* other) {
     return true;
 }

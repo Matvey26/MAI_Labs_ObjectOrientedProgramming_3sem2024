@@ -1,6 +1,7 @@
 #include <iostream>
 #include <Game.hpp>
 #include <NPCFactory.hpp>
+#include <GameObjectObservers.hpp>
 #include <thread>
 #include <chrono>
 
@@ -18,6 +19,8 @@ int main() {
     game.AddObject(NPCFactory::CreateNPC("Werewolf", {5, 3}));
     game.AddObject(NPCFactory::CreateNPC("Werewolf", {8, 1}));
     game.AddObject(NPCFactory::CreateNPC("Werewolf", {9, 12}));
+
+    game.AttachObserver(std::make_shared<LogGameObjectObserver>("/workspaces/MAI_OOP_3sem2024/tmp.txt"));
 
     std::thread fight_thread([&game](){
         while (true) {
