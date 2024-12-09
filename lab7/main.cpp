@@ -23,23 +23,28 @@ int main() {
     game.AttachObserver(std::make_shared<LogGameObjectObserver>("/workspaces/MAI_OOP_3sem2024/tmp.txt"));
 
     std::thread fight_thread([&game](){
-        while (true) {
+        // while (true) {
             game.StartBattle();
             std::this_thread::sleep_for(1000ms);
-        }
+        // }
     });
 
     std::thread movement_thread([&game](){
-        while (true) {
+        // while (true) {
             game.StartMovement();
             std::this_thread::sleep_for(100ms);
-        }
+        // }
     });
 
-    while (true) {
+    // while (true) {
         game.PrintObjs();
         std::this_thread::sleep_for(100ms);
-    }
+    // }
+
+    fight_thread.join();
+    movement_thread.join();
+
+    game.ClearObjects();
 
     return 0;
 }

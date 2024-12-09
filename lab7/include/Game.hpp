@@ -6,6 +6,7 @@
 #include <memory>
 #include <vector>
 #include <mutex>
+#include <iostream>
 
 class Game {
 private:
@@ -22,8 +23,9 @@ public:
 
     void AddObject(std::shared_ptr<GameObject> object);
     void DeleteObject(std::shared_ptr<GameObject> object);
+    void ClearObjects();
 
-    void PrintObjs();
+    void PrintObjs(std::ostream& out = std::cout);
     void StartMovement();
     void StartBattle();
 };

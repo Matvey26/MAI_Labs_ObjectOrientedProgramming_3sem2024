@@ -17,7 +17,8 @@ void Game::AttachObserver(std::shared_ptr<IGameObjectObserver> observer) {
 
 void Game::AddObject(std::shared_ptr<GameObject> object) {
     std::lock_guard<std::mutex> lock(this->game_objects_mutex_);
-    this->game_objects_.insert(object);
+    this->game_objects_.insert(object);  // Если game_objects_ — std::set
+
     for (auto& obs : this->common_observers_) {
         object->AttachObserver(obs);
     }
@@ -25,12 +26,21 @@ void Game::AddObject(std::shared_ptr<GameObject> object) {
 
 void Game::DeleteObject(std::shared_ptr<GameObject> object) {
     std::lock_guard<std::mutex> lock(this->game_objects_mutex_);
-    this->game_objects_.erase(object);
+
+    // Правильное удаление из std::set
+    auto it = this->game_objects_.find(object);
+    if (it != this->game_objects_.end()) {
+        this->game_objects_.erase(it);
+    }
 }
 
-void Game::PrintObjs() {
+void Game::ClearObjects() {
+    this->game_objects_.clear();
+}
+
+void Game::PrintObjs(std::ostream& out) {
     std::lock_guard<std::mutex> lock(this->game_objects_mutex_);
-    std::vector<std::vector<char>> field(this->MAX_FIELD_SIZE, std::vector<char>(this->MAX_FIELD_SIZE, '.'));
+    std::vector<std::vector<char>> field(this->MAX_FIELD_SIZE + 1, std::vector<char>(this->MAX_FIELD_SIZE + 1, '.'));
 
     for (auto& obj : this->game_objects_) {
         Point pos = obj->GetPosition();
@@ -39,7 +49,7 @@ void Game::PrintObjs() {
         int x = static_cast<int>(pos.GetX());
         int y = static_cast<int>(pos.GetY());
 
-        if (x >= this->MIN_FIELD_SIZE && x < this->MAX_FIELD_SIZE && y >= this->MIN_FIELD_SIZE && y < this->MAX_FIELD_SIZE) {
+        if (x >= this->MIN_FIELD_SIZE && x <= this->MAX_FIELD_SIZE && y >= this->MIN_FIELD_SIZE && y <= this->MAX_FIELD_SIZE) {
             std::shared_ptr<NPC> npc = std::dynamic_pointer_cast<NPC>(obj);
             if (npc and npc->IsAlive()) {
                 // Используем первый символ типа NPC
@@ -51,12 +61,12 @@ void Game::PrintObjs() {
     }
 
     // Вывод игрового поля
-    std::cout << "Игровое поле:\n";
+    out << "Игровое поле:\n";
     for (const auto& row : field) {
         for (char cell : row) {
-            std::cout << cell << ' ';
+            out << cell << ' ';
         }
-        std::cout << '\n';
+        out << '\n';
     }
 }
 
